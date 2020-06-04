@@ -1,10 +1,17 @@
 def inicial_groups(data):
-    groups = [[i] for i in data]  # inicialmente os dados sao grupos isolados
-    return groups
+    size   = 0
+    groups = []
+
+    for i in data:   # inicialmente os dados sao grupos isolados
+        groups.append([i])
+        size += 1
+
+    return groups,size
 
 def hierarchical(data):
-    groups = inicial_groups(data)
+    groups,size = inicial_groups(data)
     print(f"\nGrupos iniciais: {groups}\n")
+
     return groups
 
 
