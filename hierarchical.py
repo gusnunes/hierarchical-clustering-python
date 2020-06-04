@@ -35,10 +35,10 @@ def calc_media(group):
     return media
 
 def agrupa_dados(groups,j,i):
-    groups[j] = groups[j] + groups[i]
-    groups.remove(groups[i])
+    groups[j].extend(groups[i])
+    groups.remove(groups[i])   # remove cluster antigo(dado foi agrupado em outro)
 
-def remove_media(groups,medias,j,i):   # remove a media do dado que foi agrupado
+def remove_media(groups,medias,j,i):   # remove a media que fica sobrando(do dado que foi agrupado)
     medias[j] = calc_media(groups[j])
     medias.remove(medias[i])
 
