@@ -17,9 +17,9 @@ def distance_matrix(medias,size):   # procurar o menor valor na matriz de distan
         for j in range(size):
             if j >= i:   # diagonal principal e acima(distancias repetidas e nulas)
                 break
-            
             distancia = abs(medias[i] - medias[j])
             if distancia < menor:
+                menor  = distancia
                 row    = i
                 column = j
     
@@ -34,41 +34,37 @@ def calc_media(group):
     media = sum/size
     return media
 
+def agrupa_dados(groups,j,i):
+    groups[j] = groups[j] + groups[i]
+    groups.remove(groups[i])
+
+def remove_media(groups,medias,j,i):   # remove a media do dado que foi agrupado
+    medias[j] = calc_media(groups[j])
+    medias.remove(medias[i])
+
 def hierarchical(data):
     groups,size = inicial_groups(data)
     
     if size < 2:   # erro na funcao que calcula a matriz de distancia
         return groups
 
-    medias = data   # as medias iniciais sao os dados iniciais
+    medias = data   # as médias iniciais sao os dados iniciais
     print(f"Clusters iniciais: {groups}\n")
 
     cont = 0
-    qtd_clusters  = size-1
+    qtd_clusters = size-1
     while cont < qtd_clusters:
         i,j = distance_matrix(medias,size)   # linha e coluna que representa menor valor na matriz de distancias
-        
-        if i < j:
-            groups[i] = groups[i] + groups[j]
-            groups.remove(groups[j])
+        agrupa_dados(groups,j,i)
+        remove_media(groups,medias,j,i)
 
-            medias[i] = calc_media(groups[i])
-            medias.remove(medias[j])
-        else:
-            groups[j] = groups[j] + groups[i]
-            groups.remove(groups[i])
-
-            medias[j] = calc_media(groups[j])
-            medias.remove(medias[i])
-    
-        print(f"Cluster {cont+1}: {groups}")
+        print(f"{cont+1}º Agrupamento: {groups}")
         cont += 1
         size -= 1
          
 def main():
     # dados constantes por enquanto
     data = [2, 4, 6.3, 9, 11.6]
-
     hierarchical(data)
 
 main()
