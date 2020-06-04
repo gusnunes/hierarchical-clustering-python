@@ -41,11 +41,11 @@ def hierarchical(data):
         return groups
 
     medias = data   # as medias iniciais sao os dados iniciais
-    print(f"\nGrupos iniciais: {groups}\n")
+    print(f"Clusters iniciais: {groups}\n")
 
     cont = 0
-    aux  = size-1
-    while cont < aux:
+    qtd_clusters  = size-1
+    while cont < qtd_clusters:
         i,j = distance_matrix(medias,size)   # linha e coluna que representa menor valor na matriz de distancias
         
         if i < j:
@@ -60,11 +60,11 @@ def hierarchical(data):
 
             medias[j] = calc_media(groups[j])
             medias.remove(medias[i])
-        
-        print(f"Agrupamento {cont+1}: {groups}")
+    
+        print(f"Cluster {cont+1}: {groups}")
         cont += 1
         size -= 1
-
+         
 def main():
     # dados constantes por enquanto
     data = [2, 4, 6.3, 9, 11.6]
