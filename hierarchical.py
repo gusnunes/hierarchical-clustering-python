@@ -15,7 +15,7 @@ def distance_matrix(medias,size):   # procurar o menor valor na matriz de distan
 
     for i in range(2,size):
         for j in range(size):
-            if i >= j:   # diagonal principal e acima(distancias repetidas e nulas)
+            if j >= i:   # diagonal principal e acima(distancias repetidas e nulas)
                 break
             
             distancia = abs(medias[i] - medias[j])
@@ -25,37 +25,50 @@ def distance_matrix(medias,size):   # procurar o menor valor na matriz de distan
     
     return row,column
 
+def calc_media(group):
+    sum = size = 0
+    for data in group:
+        sum  += data
+        size += 1
+    
+    media = sum/size
+    return media
+
 def hierarchical(data):
     groups,size = inicial_groups(data)
     
     if size < 2:   # erro na funcao que calcula a matriz de distancia
         return groups
 
-    medias = data   # a media inicial sao os dados iniciais
+    medias = data   # as medias iniciais sao os dados iniciais
     print(f"\nGrupos iniciais: {groups}\n")
 
-    cont = 1
-    while cont < size:
-        i,j = distance_matrix(medias,size)
+    cont = 0
+    aux  = size-1
+    while cont < aux:
+        i,j = distance_matrix(medias,size)   # linha e coluna que representa menor valor na matriz de distancias
+        
         if i < j:
             groups[i] = groups[i] + groups[j]
             groups.remove(groups[j])
+
+            medias[i] = calc_media(groups[i])
+            medias.remove(medias[j])
         else:
             groups[j] = groups[j] + groups[i]
             groups.remove(groups[i])
+
+            medias[j] = calc_media(groups[j])
+            medias.remove(medias[i])
         
-        print(f"Agrupamento {cont}: {groups}")
-
+        print(f"Agrupamento {cont+1}: {groups}")
         cont += 1
-
-    return groups
-
+        size -= 1
 
 def main():
     # dados constantes por enquanto
     data = [2, 4, 6.3, 9, 11.6]
 
-    groups = hierarchical(data)
-    print(groups)
+    hierarchical(data)
 
 main()
